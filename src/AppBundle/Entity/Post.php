@@ -8,6 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * Post
  *
  * @ORM\Table(name="post")
+ * @ORM\HasLifecycleCallbacks()
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PostRepository")
  */
 class Post
@@ -154,5 +155,26 @@ class Post
     public function getUpdateAt()
     {
         return $this->update_at;
+    }
+
+    /**
+     * set values bedore persist
+     *
+     * @ORM\PrePersist
+     */
+    public function prePersist()
+    {
+        $this->create_at = new \DateTime();
+        $this->update_at = new \DateTime();
+    }
+
+    /**
+     * set values bedore update
+     *
+     * @ORM\PreUpdate
+     */
+    public function preUpdate()
+    {
+        $this->update_at = new \DateTime();
     }
 }
